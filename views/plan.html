@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Directions Web App</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpc67NiDkTZLgzICCT4XYphVCOz11_luw&libraries=places"></script>
+    <script>
+        let map;
+        let directionsService;
+        let directionsRenderer;
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 44.967, lng: -103.771 }, 
+                zoom: 4,
+            });
+            directionsService = new google.maps.DirectionsService();
+            directionsRenderer = new google.maps.DirectionsRenderer();
+            directionsRenderer.setMap(map);
+
+            // Initialize Places Autocomplete for start and end inputs
+            const startAutocomplete = new google.maps.places.Autocomplete(
+                document.getElementById("start")
+            );
+            const endAutocomplete = new google.maps.places.Autocomplete(
+                document.getElementById("end")
+            );
+        }
+
+        function calculateAndDisplayRoute() {
+            const start = document.getElementById("start").value;
+            const end = document.getElementById("end").value;
+
+            directionsService.route(
+                {
+                    origin: start,
+                    destination: end,
+                    travelMode: google.maps.TravelMode.DRIVING,
+                },
+                (response, status) => {
+                    if (status === "OK") {
+                        directionsRenderer.setDirections(response);
+                        
+                        // Extract distance and duration
+                        const route = response.routes[0];
+                        const distance = route.legs[0].distance.text;
+                        const duration = route.legs[0].duration.text;
+                        
+                        // Display distance and duration
+                        document.getElementById("distance").innerHTML = "Distance: " + distance;
+                        document.getElementById("duration").innerHTML = "Duration: " + duration;
+                    } else {
+                        window.alert("Directions request failed due to " + status);
+                    }
+                }
+            );
+        }
+    </script>
+</head>
+<body onload="initMap()">
+    <div>
+        <label for="start">Start:</label>
+        <input type="text" id="start" autocomplete="on" />
+        <label for="end">End:</label>
+        <input type="text" id="end" autocomplete="on" />
+        <button onclick="calculateAndDisplayRoute()">Get Directions</button>
+    </div>
+    <div id="map" style="height: 400px; width: 100%;"></div>
+    <div id="distance"></div>
+    <div id="duration"></div>
+</body>
+</html>
