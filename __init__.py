@@ -29,7 +29,7 @@ def plan_trip():
 def see_trips():
     # Assuming db.py has a function called get_trips that fetches trips from the database
     trips = db.get_trips()
-    return render_template('see.html', trips=trips)
+    return render_template('view_database.html', trips=trips)
 
 if __name__ == '__main__':
     app.run(debug=True)
