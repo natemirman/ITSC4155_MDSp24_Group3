@@ -53,40 +53,47 @@
                 document.getElementById("end")
             );
         }
-
-        function calculateAndDisplayRoute() {
-            const start = document.getElementById("start").value;
-            const end = document.getElementById("end").value;
-
-            directionsService.route(
-                {
-                    origin: start,
-                    destination: end,
-                    travelMode: google.maps.TravelMode.DRIVING,
-                },
-                (response, status) => {
-                    if (status === "OK") {
-                        directionsRenderer.setDirections(response);
-
-                        // Extract distance and duration
-                        const route = response.routes[0];
-                        const distance = route.legs[0].distance.text;
-                        const duration = route.legs[0].duration.text;
-
-                        // Display distance and duration
-                        document.getElementById("distance").innerHTML = "Distance: " + distance;
-                        document.getElementById("duration").innerHTML = "Duration: " + duration;
-                    } else {
-                        window.alert("Directions request failed due to " + status);
-                    }
-                }
-            );
+        function setCalculatedValues(distance, duration) {
+            document.getElementById("distanceInput").value = distance;
+            document.getElementById("durationInput").value = duration;
         }
+
+    function calculateAndDisplayRoute() {
+        const start = document.getElementById("start").value;
+        const end = document.getElementById("end").value;
+
+        directionsService.route(
+        {
+            origin: start,
+            destination: end,
+            travelMode: google.maps.TravelMode.DRIVING,
+        },
+        (response, status) => {
+            if (status === "OK") {
+                directionsRenderer.setDirections(response);
+
+                // Extract distance and duration
+                const route = response.routes[0];
+                const distance = route.legs[0].distance.text;
+                const duration = route.legs[0].duration.text;
+
+                // Display distance and duration
+                document.getElementById("distance").innerHTML = "Distance: " + distance;
+                document.getElementById("duration").innerHTML = "Duration: " + duration;
+
+                // Set calculated values to hidden inputs
+                setCalculatedValues(distance, duration);
+            } else {
+                window.alert("Directions request failed due to " + status);
+            }
+        }
+    );
+}
     </script>
 </head>
 <body onload="initMap()">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="index.html">Home</a>
+        <a class="navbar-brand" href="/">Home</a>
     </nav>
 
     <header class="bg-light text-center py-4">
@@ -99,11 +106,17 @@
 
     <div class="container mt-5">
         <div class="form">
-            <label for="start">Start: </label>
-            <input type="text" id="start" autocomplete="on" />
-            <label for="end">End: </label>
-            <input type="text" id="end" autocomplete="on" />
-            <button class="btn btn-primary" onclick="calculateAndDisplayRoute()">Get Directions</button>
+            <form id="directionsForm" method="post" action="/plan">
+                <label for="start">Start: </label>
+                <input type="text" id="start" name="start" autocomplete="on" />
+                <label for="end">End: </label>
+                <input type="text" id="end" name="end" autocomplete="on" />
+                <button class="btn btn-primary" type="button" onclick="calculateAndDisplayRoute()">Get Directions</button>
+                <!-- Hidden inputs to store calculated time and distance -->
+                <input type="hidden" id="distanceInput" name="distance" />
+                <input type="hidden" id="durationInput" name="duration" />
+                <button class="btn btn-primary" type="submit">Save Trip</button> <!-- This submits the form -->
+            </form>
         </div>
         <div id="map" style="height: 400px; width: 100%;"></div>
         <div id="distance"></div>
@@ -111,7 +124,7 @@
     </div>
     <br/>
     <div class="text-center">
-        <a href="see.html" class="btn btn-primary btn-md">See Trips</a>
+        <a href="/see" class="btn btn-primary btn-md">See Trips</a>
       </div>
 
     <footer class="footer">
