@@ -31,5 +31,13 @@ def see_trips():
     trips = db.get_trips()
     return render_template('view_database.html', trips=trips)
 
+@app.route('/view/<int:trip_id>')
+def view_trip(trip_id):
+    # Fetch trip details from the database based on trip_id
+    trip = db.get_trip_by_id(trip_id)
+
+    
+    return render_template('view.html', trip=trip)
+
 if __name__ == '__main__':
     app.run(debug=True)

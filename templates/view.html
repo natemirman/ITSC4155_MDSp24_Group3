@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Trip</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+        .login-signup {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        p {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">Home</a>
+      </nav>
+    
+      <header class="bg-light text-center py-4">
+        <h1>View Trip</h1>
+        <div class="login-signup">
+          <button class="btn btn-primary">Log In</button>
+          <button class="btn btn-success">Sign Up</button>
+        </div>
+      </header>
+    
+    <div class="container mt-5">
+        <div id="map"></div>
+    </div>
+    <p>Distance: {{ trip[3] }}</p>
+    <p>Time: {{ trip[4] }}</p>
+
+    <footer class="footer">
+        <div>
+            <a href="about.html">About</a> | <a href="contact.html">Contact</a>
+        </div>
+    </footer>
+
+    <script>
+        function initMap() {
+            const start = "{{ trip[1] }}";
+            const end = "{{ trip[2] }}";
+
+            const map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 44.967, lng: -103.771 },
+                zoom: 4,
+            });
+
+            const directionsService = new google.maps.DirectionsService();
+            const directionsRenderer = new google.maps.DirectionsRenderer();
+            directionsRenderer.setMap(map);
+
+            directionsService.route(
+                {
+                    origin: start,
+                    destination: end,
+                    travelMode: google.maps.TravelMode.DRIVING,
+                },
+                (response, status) => {
+                    if (status === "OK") {
+                        directionsRenderer.setDirections(response);
+                    } else {
+                        window.alert("Directions request failed due to " + status);
+                    }
+                }
+            );
+        }
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpc67NiDkTZLgzICCT4XYphVCOz11_luw&callback=initMap" async defer></script>
+    <br/>
+    <div class="text-center">
+        <a href="/see" class="btn btn-primary btn-md">See Trips</a>
+      </div>
+
+</body>
+</html>
