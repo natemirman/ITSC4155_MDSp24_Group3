@@ -74,7 +74,15 @@ def get_trip_by_id(trip_id):
     
     conn.close()
     return row
-
+def delete_trip(trip_id):
+    """
+    Delete a trip by its ID
+    """
+    conn = create_connection(db_file)
+    cur = conn.cursor()
+    cur.execute("DELETE FROM trips WHERE id=?", (trip_id,))
+    conn.commit()
+    conn.close()
 
 
 conn.close()

@@ -38,6 +38,12 @@ def view_trip(trip_id):
 
     
     return render_template('view.html', trip=trip)
+@app.route('/delete/<int:trip_id>')
+def delete_trips(trip_id):
+
+    trips = db.delete_trip(trip_id)
+    trips = db.get_trips()
+    return render_template('view_database.html', trips=trips)
 
 if __name__ == '__main__':
     app.run(debug=True)
