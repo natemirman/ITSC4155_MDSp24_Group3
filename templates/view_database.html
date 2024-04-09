@@ -30,7 +30,7 @@
   </nav>
 
   <header class="bg-light text-center py-4">
-    <h1>RoadTrip</h1>
+    <h1>Trips Planned</h1>
     <div class="login-signup">
       <button class="btn btn-primary">Log In</button>
       <button class="btn btn-success">Sign Up</button>
@@ -38,18 +38,36 @@
   </header>
 
   <div class="container mt-5">
-    <img src="../images/roadtrip.jpg" alt="Road Trip" class="img-fluid mb-4">
-    <div class="row">
-        <div class="col-md-4">
-            <a href="/plan" class="btn btn-primary btn-block">Plan a Trip</a>
-          </div>
-          <div class="col-md-4">
-            <a href="/see" class="btn btn-info btn-block">See My Trips</a>
-          </div>
-          <div class="col-md-4">
-            <a href="stat.html" class="btn btn-warning btn-block">My Trip Statistics</a>
-          </div>
-    </div>
+    <table class="table">
+      <thead>
+          <tr>
+              <th>ID</th>
+              <th>Start</th>
+              <th>End</th>
+              <th>Distance</th>
+              <th>Duration</th>
+              <th>Action</th>
+          </tr>
+      </thead>
+      <tbody>
+          {% for trip in trips %}
+          <tr>
+              <td>{{ trip[0] }}</td>
+              <td>{{ trip[1] }}</td>
+              <td>{{ trip[2] }}</td>
+              <td>{{ trip[3] }}</td>
+              <td>{{ trip[4] }}</td>
+              <td>
+                  <a href="/view/{{ trip[0] }}" class="btn btn-primary">View</a>
+                  <a href="/delete/{{ trip[0] }}" class="btn btn-danger btn">Delete</a>
+              </td>
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+  </div>
+  <div class="text-center">
+    <a href="/plan" class="btn btn-primary btn-md">Plan a Trip</a>
   </div>
 
   <footer class="footer">

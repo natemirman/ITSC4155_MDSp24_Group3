@@ -62,6 +62,27 @@ def get_trips():
 
     conn.close()
     return rows
+def get_trip_by_id(trip_id):
+    """
+    Query a trip by its ID
+    """
+    conn = create_connection(db_file)
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM trips WHERE id=?", (trip_id,))
+    
+    row = cur.fetchone()
+    
+    conn.close()
+    return row
+def delete_trip(trip_id):
+    """
+    Delete a trip by its ID
+    """
+    conn = create_connection(db_file)
+    cur = conn.cursor()
+    cur.execute("DELETE FROM trips WHERE id=?", (trip_id,))
+    conn.commit()
+    conn.close()
 
 
 conn.close()
