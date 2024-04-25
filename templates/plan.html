@@ -75,7 +75,7 @@
     {
         origin: start,
         destination: end,
-        waypoints: waypoints, // Include waypoints only if stop is provided
+        waypoints: waypoints, 
         travelMode: google.maps.TravelMode.DRIVING,
     },
     (response, status) => {
@@ -83,13 +83,21 @@
             directionsRenderer.setDirections(response);
 
             // Extract distance and duration
+            let totalDistance = 0;
+            let totalDuration = 0;
             const route = response.routes[0];
-            const distance = route.legs[0].distance.text;
-            const duration = route.legs[0].duration.text;
+            route.legs.forEach(leg => {
+                totalDistance += leg.distance.value;
+                totalDuration += leg.duration.value;
+            });
+            //Formats distance in meter to miles
+            const distance=formatDistance(totalDistance);
+            const duration=formatDuration(totalDuration);
 
             // Display distance and duration
             document.getElementById("distance").innerHTML = "Distance: " + distance;
             document.getElementById("duration").innerHTML = "Duration: " + duration;
+
 
             // Set calculated values to hidden inputs
             setCalculatedValues(distance, duration);
@@ -97,6 +105,18 @@
             window.alert("Directions request failed due to " + status);
         }
     });
+    //function to format distance in meters to miles
+    function formatDistance(meters) {
+    const miles = meters * 0.000621371;
+    return miles.toFixed(2) + " mi";
+    }
+
+    //  function to format duration in seconds to hours
+    function formatDuration(seconds) {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    return hours + " hr " + minutes + " min";
+    }
 }
 
     </script>

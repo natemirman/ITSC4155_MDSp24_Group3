@@ -41,13 +41,15 @@
           <button class="btn btn-success">Sign Up</button>
         </div>
       </header>
+
     
     <div class="container mt-5">
         <div id="map"></div>
+        <p>Distance: {{ trip[4] }}</p>
+        <p>Time: {{ trip[5] }}</p>
         <div class="direction-steps" id="directionSteps"></div>
     </div>
-    <p>Distance: {{ trip[4] }}</p>
-    <p>Time: {{ trip[5] }}</p>
+
 
     <footer class="footer">
         <div>
@@ -88,22 +90,23 @@
 
                 // Extract direction steps
                 const route = response.routes[0];
-                const steps = route.legs[0].steps;
 
                 // Display steps
                 const stepsContainer = document.getElementById("directionSteps");
                 stepsContainer.innerHTML = "";
-                steps.forEach((step, index) => {
+                route.legs.forEach((leg, legIndex) => {
+                    leg.steps.forEach((step, stepIndex) => {
                     const instruction = step.instructions;
                     const distance = step.distance.text;
                     const duration = step.duration.text;
-                    const stepInfo = `<div><strong>Step ${index + 1}:</strong> ${instruction} (${distance}, ${duration})</div>`;
+                    const stepInfo = `<div><strong>Step ${stepIndex + 1}:</strong> ${instruction} (${distance}, ${duration})</div>`;
                     stepsContainer.innerHTML += stepInfo;
+                    });
                 });
-            } else {
-                window.alert("Directions request failed due to " + status);
-            }
-        });
+                } else {
+                    window.alert("Directions request failed due to " + status);
+                }
+                });
         }
     </script>
 
