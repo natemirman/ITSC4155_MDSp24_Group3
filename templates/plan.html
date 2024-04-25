@@ -52,6 +52,9 @@
             const endAutocomplete = new google.maps.places.Autocomplete(
                 document.getElementById("end")
             );
+            const stopAutocomplete = new google.maps.places.Autocomplete(
+                document.getElementById("stop")
+            );
         }
         function setCalculatedValues(distance, duration) {
             document.getElementById("distanceInput").value = distance;
@@ -59,36 +62,43 @@
         }
 
     function calculateAndDisplayRoute() {
-        const start = document.getElementById("start").value;
-        const end = document.getElementById("end").value;
+    const start = document.getElementById("start").value;
+    const end = document.getElementById("end").value;
+    const stop = document.getElementById("stop").value;
 
-        directionsService.route(
-        {
-            origin: start,
-            destination: end,
-            travelMode: google.maps.TravelMode.DRIVING,
-        },
-        (response, status) => {
-            if (status === "OK") {
-                directionsRenderer.setDirections(response);
+    let waypoints = [];
+    if (stop !== "") {
+        waypoints.push({ location: stop, stopover: true });
+    }
 
-                // Extract distance and duration
-                const route = response.routes[0];
-                const distance = route.legs[0].distance.text;
-                const duration = route.legs[0].duration.text;
+    directionsService.route(
+    {
+        origin: start,
+        destination: end,
+        waypoints: waypoints, // Include waypoints only if stop is provided
+        travelMode: google.maps.TravelMode.DRIVING,
+    },
+    (response, status) => {
+        if (status === "OK") {
+            directionsRenderer.setDirections(response);
 
-                // Display distance and duration
-                document.getElementById("distance").innerHTML = "Distance: " + distance;
-                document.getElementById("duration").innerHTML = "Duration: " + duration;
+            // Extract distance and duration
+            const route = response.routes[0];
+            const distance = route.legs[0].distance.text;
+            const duration = route.legs[0].duration.text;
 
-                // Set calculated values to hidden inputs
-                setCalculatedValues(distance, duration);
-            } else {
-                window.alert("Directions request failed due to " + status);
-            }
+            // Display distance and duration
+            document.getElementById("distance").innerHTML = "Distance: " + distance;
+            document.getElementById("duration").innerHTML = "Duration: " + duration;
+
+            // Set calculated values to hidden inputs
+            setCalculatedValues(distance, duration);
+        } else {
+            window.alert("Directions request failed due to " + status);
         }
-    );
+    });
 }
+
     </script>
 </head>
 <body onload="initMap()">
@@ -111,6 +121,8 @@
                 <input type="text" id="start" name="start" autocomplete="on" />
                 <label for="end">End: </label>
                 <input type="text" id="end" name="end" autocomplete="on" />
+                <label for="stop">Stop: </label>
+                <input type= "text" id="stop" name="stop" autocomplete="on" />
                 <button class="btn btn-primary" type="button" onclick="calculateAndDisplayRoute()">Get Directions</button>
                 <!-- Hidden inputs to store calculated time and distance -->
                 <input type="hidden" id="distanceInput" name="distance" />

@@ -45,8 +45,8 @@
     <div class="container mt-5">
         <div id="map"></div>
     </div>
-    <p>Distance: {{ trip[3] }}</p>
-    <p>Time: {{ trip[4] }}</p>
+    <p>Distance: {{ trip[4] }}</p>
+    <p>Time: {{ trip[5] }}</p>
 
     <footer class="footer">
         <div>
@@ -58,6 +58,7 @@
         function initMap() {
             const start = "{{ trip[1] }}";
             const end = "{{ trip[2] }}";
+            const stop ="{{ trip[3] }}";
 
             const map = new google.maps.Map(document.getElementById("map"), {
                 center: { lat: 44.967, lng: -103.771 },
@@ -68,12 +69,18 @@
             const directionsRenderer = new google.maps.DirectionsRenderer();
             directionsRenderer.setMap(map);
 
-            directionsService.route(
-                {
-                    origin: start,
-                    destination: end,
-                    travelMode: google.maps.TravelMode.DRIVING,
-                },
+        let waypoints = [];
+        if (stop !== "") {
+            waypoints.push({ location: stop, stopover: true });
+        }
+
+        directionsService.route(
+        {
+            origin: start,
+            destination: end,
+            waypoints: waypoints, // Include waypoints only if stop is provided
+            travelMode: google.maps.TravelMode.DRIVING,
+        },
                 (response, status) => {
                     if (status === "OK") {
                         directionsRenderer.setDirections(response);

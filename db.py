@@ -31,6 +31,7 @@ if conn is not None:
                                         id integer PRIMARY KEY,
                                         start TEXT NOT NULL,
                                         end TEXT NOT NULL,
+                                        stop TEXT NOT NULL,
                                         distance TEXT,
                                         duration TEXT
                                     ); """
@@ -38,15 +39,15 @@ if conn is not None:
 else:
     print("Error! cannot create the database connection.")
 
-def insert_trip(start, end, distance, duration):
+def insert_trip(start, end, distance, duration,stop):
     """
     Insert a new trip into the trips table
     """
     conn = create_connection(db_file)
-    sql = ''' INSERT INTO trips(start, end, distance, duration)
-              VALUES(?,?,?,?) '''
+    sql = ''' INSERT INTO trips(start, end, distance, duration,stop)
+              VALUES(?,?,?,?,?) '''
     cur = conn.cursor()
-    cur.execute(sql, (start, end, distance, duration))
+    cur.execute(sql, (start, end, distance, duration,stop))
     conn.commit()
     conn.close()
 

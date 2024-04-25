@@ -16,9 +16,9 @@ def plan_trip():
         end = request.form['end']
         distance = request.form['distance']  # Assuming you add a way to input this in the form
         duration = request.form['duration']  # Assuming you add a way to input this in the form
-        
+        stop=request.form['stop']
         # Assuming db.py has a function called insert_trip that inserts the data into the database
-        db.insert_trip(start, end, distance, duration)
+        db.insert_trip(start, end, distance, duration,stop)
         
         # Redirect to another page, maybe to the list of trips
         return redirect('/see')
