@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- Meta tags for character set and viewport -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Title -->
     <title>Travel Planner</title>
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
     <style>
       
         .login-signup {
@@ -30,22 +34,25 @@
 
     </style>
 </head>
+    <!-- Google Maps API with Places Library -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpc67NiDkTZLgzICCT4XYphVCOz11_luw&libraries=places"></script>
+    <!-- JavaScript for Map Initialization and Directions Calculation -->
     <script>
         let map;
         let directionsService;
         let directionsRenderer;
-
+        // Initialize Map
         function initMap() {
             map = new google.maps.Map(document.getElementById("map"), {
                 center: { lat: 44.967, lng: -103.771 },
                 zoom: 4,
             });
+            // Initialize Directions Service and Renderer
             directionsService = new google.maps.DirectionsService();
             directionsRenderer = new google.maps.DirectionsRenderer();
             directionsRenderer.setMap(map);
 
-            // Initialize Places Autocomplete for start and end inputs
+            // Initialize Places Autocomplete for start,end and stop inputs
             const startAutocomplete = new google.maps.places.Autocomplete(
                 document.getElementById("start")
             );
@@ -56,21 +63,23 @@
                 document.getElementById("stop")
             );
         }
+        // Set calculated distance and duration values to hidden inputs
         function setCalculatedValues(distance, duration) {
             document.getElementById("distanceInput").value = distance;
             document.getElementById("durationInput").value = duration;
         }
 
     function calculateAndDisplayRoute() {
+    // Get start, end, and stop inputs
     const start = document.getElementById("start").value;
     const end = document.getElementById("end").value;
     const stop = document.getElementById("stop").value;
-
+    // Create waypoints(stops) array
     let waypoints = [];
     if (stop !== "") {
         waypoints.push({ location: stop, stopover: true });
     }
-
+    // Request route from DirectionsService
     directionsService.route(
     {
         origin: start,
@@ -80,6 +89,7 @@
     },
     (response, status) => {
         if (status === "OK") {
+            // Render route on map
             directionsRenderer.setDirections(response);
 
             // Extract distance and duration
@@ -90,7 +100,7 @@
                 totalDistance += leg.distance.value;
                 totalDuration += leg.duration.value;
             });
-            //Formats distance in meter to miles
+            //Formats distance and duration
             const distance=formatDistance(totalDistance);
             const duration=formatDuration(totalDuration);
 
@@ -102,6 +112,7 @@
             // Set calculated values to hidden inputs
             setCalculatedValues(distance, duration);
         } else {
+            // Alert user if directions request fails
             window.alert("Directions request failed due to " + status);
         }
     });
@@ -122,19 +133,23 @@
     </script>
 </head>
 <body onload="initMap()">
+     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="/">Home</a>
     </nav>
+    <!-- Header -->
 
     <header class="bg-light text-center py-4">
         <h1>Directions Web App</h1>
+        <!-- Login/Sign Up Buttons -->
         <div class="login-signup">
             <button class="btn btn-primary">Log In</button>
             <button class="btn btn-success">Sign Up</button>
         </div>
     </header>
-
+     <!-- Main Content -->
     <div class="container mt-5">
+        <!-- Form for Planning Trip -->
         <div class="form">
             <form id="directionsForm" method="post" action="/plan">
                 <label for="start">Start: </label>
@@ -143,28 +158,34 @@
                 <input type="text" id="end" name="end" autocomplete="on" />
                 <label for="stop">Stop: </label>
                 <input type= "text" id="stop" name="stop" autocomplete="on" />
+                <!-- Button to Calculate and Display Route -->
                 <button class="btn btn-primary" type="button" onclick="calculateAndDisplayRoute()">Get Directions</button>
                 <!-- Hidden inputs to store calculated time and distance -->
                 <input type="hidden" id="distanceInput" name="distance" />
                 <input type="hidden" id="durationInput" name="duration" />
-                <button class="btn btn-primary" type="submit">Save Trip</button> <!-- This submits the form -->
+                <!-- Button to Save Trip (Submits Form) -->
+                <button class="btn btn-primary" type="submit">Save Trip</button> 
             </form>
         </div>
+        <!-- Map Display -->
         <div id="map" style="height: 400px; width: 100%;"></div>
+        <!-- Display of Calculated Distance and Duration -->
         <div id="distance"></div>
         <div id="duration"></div>
     </div>
+     <!-- Button to see trips. Links to the /see route in app.py -->
     <br/>
     <div class="text-center">
         <a href="/see" class="btn btn-primary btn-md">See Trips</a>
       </div>
-
+    <!-- Footer -->
     <footer class="footer">
+        <!-- Links to About and Contact Pages. Not finished -->
         <div>
             <a href="about.html">About</a> | <a href="contact.html">Contact</a>
         </div>
     </footer>
-
+    <!-- jQuery, Popper.js, Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

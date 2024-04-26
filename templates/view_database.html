@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Meta tags for character set and viewport -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Title -->
   <title>Travel Planner</title>
+  <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Custom CSS -->
   <style>
 
     .login-signup {
@@ -25,19 +29,22 @@
   </style>
 </head>
 <body>
+  <!-- Navigation bar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="/">Home</a>
   </nav>
-
+  <!-- Header section --> 
   <header class="bg-light text-center py-4">
     <h1>Trips Planned</h1>
+    <!-- Login/Signup buttons -->
     <div class="login-signup">
       <button class="btn btn-primary">Log In</button>
       <button class="btn btn-success">Sign Up</button>
     </div>
   </header>
-
+  <!-- Main content container -->
   <div class="container mt-5">
+    <!-- Table to display trip information -->
     <table class="table">
       <thead>
           <tr>
@@ -50,6 +57,7 @@
           </tr>
       </thead>
       <tbody>
+        <!-- Loop through trips and display trip information -->
           {% for trip in trips %}
           <tr>
               <td>{{ trip[0] }}</td>
@@ -57,6 +65,7 @@
               <td>{{ trip[2] }}</td>
               <td>{{ trip[4] }}</td>
               <td>{{ trip[5] }}</td>
+              <!-- Buttons for viewing and deleting trips -->
               <td>
                   <a href="/view/{{ trip[0] }}" class="btn btn-primary">View</a>
                   <a href="/delete/{{ trip[0] }}" class="btn btn-danger btn">Delete</a>
@@ -66,16 +75,18 @@
       </tbody>
   </table>
   </div>
+  <!-- Button to plan a new trip -->
   <div class="text-center">
     <a href="/plan" class="btn btn-primary btn-md">Plan a Trip</a>
   </div>
-
+  <!-- Footer section -->
   <footer class="footer">
     <div>
+      <!-- Links to About and Contact pages not finished -->
       <a href="about.html">About</a> | <a href="contact.html">Contact</a>
     </div>
   </footer>
-
+  <!-- Bootstrap JavaScript libraries -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

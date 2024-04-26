@@ -3,7 +3,15 @@ import sqlite3
 from sqlite3 import Error
 
 def create_connection(db_file):
-    """ create a database connection to a SQLite database """
+    """ 
+    Create a database connection to a SQLite database file.
+    
+    Args:
+    db_file (str): The path to the SQLite database file.
+    
+    Returns:
+    conn: The database connection object.
+    """
     conn = None
     try:
         conn = sqlite3.connect(db_file)
@@ -14,7 +22,13 @@ def create_connection(db_file):
     return conn
 
 def create_table(conn, create_table_sql):
-    """ create a table from the create_table_sql statement """
+    """ 
+    Create a table in the database using the provided SQL statement.
+    
+    Args:
+    conn: The database connection object.
+    create_table_sql (str): The SQL statement to create the table.
+    """
     try:
         c = conn.cursor()
         c.execute(create_table_sql)
@@ -41,7 +55,14 @@ else:
 
 def insert_trip(start, end, distance, duration,stop):
     """
-    Insert a new trip into the trips table
+    Insert a new trip into the trips table.
+    
+    Args:
+    start (str): The starting location of the trip.
+    end (str): The ending location of the trip.
+    distance (str): The distance of the trip.
+    duration (str): The duration of the trip.
+    stop (str): Any stops made during the trip.
     """
     conn = create_connection(db_file)
     sql = ''' INSERT INTO trips(start, end, distance, duration,stop)
@@ -53,7 +74,10 @@ def insert_trip(start, end, distance, duration,stop):
 
 def get_trips():
     """
-    Query all rows in the trips table
+    Query all rows in the trips table.
+    
+    Returns:
+    list: A list of tuples representing each row in the trips table.
     """
     conn = create_connection(db_file)
     cur = conn.cursor()
@@ -65,7 +89,13 @@ def get_trips():
     return rows
 def get_trip_by_id(trip_id):
     """
-    Query a trip by its ID
+    Query a trip by its ID.
+    
+    Args:
+    trip_id (int): The ID of the trip to retrieve.
+    
+    Returns:
+    tuple: A tuple representing the row in the trips table corresponding to the provided trip ID.
     """
     conn = create_connection(db_file)
     cur = conn.cursor()
@@ -77,7 +107,10 @@ def get_trip_by_id(trip_id):
     return row
 def delete_trip(trip_id):
     """
-    Delete a trip by its ID
+    Delete a trip by its ID.
+    
+    Args:
+    trip_id (int): The ID of the trip to delete.
     """
     conn = create_connection(db_file)
     cur = conn.cursor()

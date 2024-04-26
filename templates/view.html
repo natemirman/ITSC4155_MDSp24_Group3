@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- Meta tags for character set and viewport -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Title -->
     <title>View Trip</title>
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
     <style>
         #map {
             height: 400px;
@@ -30,34 +34,43 @@
     </style>
 </head>
 <body>
+    <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="/">Home</a>
       </nav>
-    
+      <!-- Header -->
       <header class="bg-light text-center py-4">
         <h1>View Trip</h1>
+        <!-- Login/Sign Up Buttons -->
         <div class="login-signup">
           <button class="btn btn-primary">Log In</button>
           <button class="btn btn-success">Sign Up</button>
         </div>
       </header>
 
-    
+    <!-- Main Content -->
     <div class="container mt-5">
+        <!-- Map Display -->
         <div id="map"></div>
+        <!-- Display of Distance -->
         <p>Distance: {{ trip[4] }}</p>
+        <!-- Display of Time -->
         <p>Time: {{ trip[5] }}</p>
+        <!-- Direction Steps -->
         <div class="direction-steps" id="directionSteps"></div>
     </div>
 
-
+    <!-- Footer -->
     <footer class="footer">
+        <!-- Links to About and Contact Pages. Not finished -->
         <div>
             <a href="about.html">About</a> | <a href="contact.html">Contact</a>
         </div>
     </footer>
+    <!-- JavaScript for Map Initialization and Directions Calculation -->
 
     <script>
+        // Initialize Map from database values
         function initMap() {
             const start = "{{ trip[1] }}";
             const end = "{{ trip[2] }}";
@@ -67,21 +80,23 @@
                 center: { lat: 44.967, lng: -103.771 },
                 zoom: 4,
             });
+            // Initialize Directions Service and Renderer
 
             const directionsService = new google.maps.DirectionsService();
             const directionsRenderer = new google.maps.DirectionsRenderer();
             directionsRenderer.setMap(map);
+        // Create waypoints(stops) array
 
         let waypoints = [];
         if (stop !== "") {
             waypoints.push({ location: stop, stopover: true });
         }
-
+        // Request route from DirectionsService
         directionsService.route(
         {
             origin: start,
             destination: end,
-            waypoints: waypoints, // Include waypoints only if stop is provided
+            waypoints: waypoints, 
             travelMode: google.maps.TravelMode.DRIVING,
         },
                 (response, status) => {
@@ -104,6 +119,7 @@
                     });
                 });
                 } else {
+                    // Alert user if directions request fails
                     window.alert("Directions request failed due to " + status);
                 }
                 });
