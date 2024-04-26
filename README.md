@@ -1,5 +1,5 @@
 # Road Trip
-The Travel Planner is a web application designed to help users plan and manage their road trips efficiently.
+RoadTrip is a web application designed to help users plan and manage their road trips efficiently.
 
 ## Key Features
 Trip Planning: Users can input start and end locations, as well as optional stopovers, to plan their trips.
