@@ -24,7 +24,7 @@
         .form
         {
             padding-bottom: 20px;
-            padding-left:220px ;
+
         }
 
 
@@ -55,10 +55,26 @@
             const stopAutocomplete = new google.maps.places.Autocomplete(
                 document.getElementById("stop")
             );
+            // Add event listeners to input fields to hide the "Save Trip" button when any field is changed
+            document.getElementById("start").addEventListener("input", hideSaveTripBtn);
+            document.getElementById("end").addEventListener("input", hideSaveTripBtn);
+            document.getElementById("stop").addEventListener("input", hideSaveTripBtn);
+            // Prevent form submission on Enter key press
+            document.getElementById("directionsForm").addEventListener("keypress", function(event) {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    return false;
+                }
+            });
         }
+        function hideSaveTripBtn() {
+        document.getElementById("saveTripBtn").style.display = "none";
+        }
+
         function setCalculatedValues(distance, duration) {
             document.getElementById("distanceInput").value = distance;
             document.getElementById("durationInput").value = duration;
+            document.getElementById("saveTripBtn").style.display = "block"; // Show the Save Trip button
         }
 
     function calculateAndDisplayRoute() {
@@ -147,7 +163,7 @@
                 <!-- Hidden inputs to store calculated time and distance -->
                 <input type="hidden" id="distanceInput" name="distance" />
                 <input type="hidden" id="durationInput" name="duration" />
-                <button class="btn btn-primary" type="submit">Save Trip</button> <!-- This submits the form -->
+                <button id="saveTripBtn" class="btn btn-primary" type="submit" style="display: none;" >Save Trip</button> <!-- This submits the form -->
             </form>
         </div>
         <div id="map" style="height: 400px; width: 100%;"></div>
