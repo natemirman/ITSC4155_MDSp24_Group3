@@ -28,7 +28,7 @@
         .form
         {
             padding-bottom: 20px;
-            padding-left:220px ;
+
         }
 
 
@@ -62,11 +62,27 @@
             const stopAutocomplete = new google.maps.places.Autocomplete(
                 document.getElementById("stop")
             );
+            // Add event listeners to input fields to hide the "Save Trip" button when any field is changed
+            document.getElementById("start").addEventListener("input", hideSaveTripBtn);
+            document.getElementById("end").addEventListener("input", hideSaveTripBtn);
+            document.getElementById("stop").addEventListener("input", hideSaveTripBtn);
+            // Prevent form submission on Enter key press
+            document.getElementById("directionsForm").addEventListener("keypress", function(event) {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    return false;
+                }
+            });
         }
+        function hideSaveTripBtn() {
+        document.getElementById("saveTripBtn").style.display = "none";
+        }
+
         // Set calculated distance and duration values to hidden inputs
         function setCalculatedValues(distance, duration) {
             document.getElementById("distanceInput").value = distance;
             document.getElementById("durationInput").value = duration;
+            document.getElementById("saveTripBtn").style.display = "block"; // Show the Save Trip button
         }
 
     function calculateAndDisplayRoute() {
@@ -164,7 +180,7 @@
                 <input type="hidden" id="distanceInput" name="distance" />
                 <input type="hidden" id="durationInput" name="duration" />
                 <!-- Button to Save Trip (Submits Form) -->
-                <button class="btn btn-primary" type="submit">Save Trip</button> 
+                <button id="saveTripBtn" class="btn btn-primary" type="submit" style="display: none;" >Save Trip</button> 
             </form>
         </div>
         <!-- Map Display -->

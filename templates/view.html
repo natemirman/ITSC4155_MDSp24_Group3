@@ -31,6 +31,27 @@
         p {
             text-align: center;
         }
+        .text-center {
+
+            padding-bottom: 60px;
+        }
+        .accordion-item {
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+            margin-bottom: 10px;
+        }
+        .accordion-header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+        }
+        .accordion-body {
+            padding: 10px;
+        }
+        .accordion-body.collapsed {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -57,7 +78,15 @@
         <!-- Display of Time -->
         <p>Time: {{ trip[5] }}</p>
         <!-- Direction Steps -->
-        <div class="direction-steps" id="directionSteps"></div>
+        <div class="accordion-item">
+            <div class="accordion-header" data-toggle="collapse" data-target="#directionSteps" aria-expanded="false" aria-controls="directionSteps">
+                Show Steps
+                <span class="float-right">+</span>
+            </div>
+            <div class="accordion-body collapse" id="directionSteps">
+                <!-- Direction Steps will be added here dynamically -->
+            </div>
+        </div>
     </div>
 
     <!-- Footer -->
@@ -131,6 +160,10 @@
     <div class="text-center">
         <a href="/see" class="btn btn-primary btn-md">See Trips</a>
       </div>
+      
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>
 </html>
