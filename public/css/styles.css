@@ -1,0 +1,59 @@
+#map {
+    height: 400px;
+    width: 100%;
+}
+.login-signup {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+  .footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #343a40;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+  }
+  .container {
+    padding-bottom: 60px;
+  }
+
+  p {
+    text-align: center;
+}
+.text-center {
+
+    padding-bottom: 60px;
+}
+.accordion-item {
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    margin-bottom: 10px;
+}
+.accordion-header {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+}
+.accordion-body {
+    padding: 10px;
+}
+.accordion-body.collapsed {
+    display: none;
+}
+
+.custom-header {
+    padding: 20px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; 
+}
+
+.container {
+    padding: 0; 
+}
+
