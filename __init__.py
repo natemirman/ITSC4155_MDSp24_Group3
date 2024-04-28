@@ -1,12 +1,12 @@
 #__init__.py
-from flask import Flask, request, redirect, render_template
+from flask import Flask, request, redirect, render_template, url_for
 import db  # Ensure this imports your db.py functionality for database interaction
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/public', static_folder='public')
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', css_style="/public/css/styles.css")
 
 @app.route('/plan', methods=['GET', 'POST'])
 def plan_trip():
@@ -47,3 +47,23 @@ def delete_trips(trip_id):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+@app.route('/signup')
+def signup():
+    return render_template('signup.html')
+
+@app.route('/stat')
+def stat():
+    return render_template('stat.html')
