@@ -1,41 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Travel Planner</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <style>
+{% include 'partials/header.html' %}
 
-    .login-signup {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-    }
-    .footer {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      background-color: #343a40;
-      color: white;
-      text-align: center;
-      padding: 10px 0;
-    }
-
-  </style>
-</head>
-<body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="index.html">Home</a>
-  </nav>
-
-  <header class="bg-light text-center py-4">
-    <h1>Trips Planned</h1>
-    <div class="login-signup">
-      <button class="btn btn-primary">Log In</button>
-      <button class="btn btn-success">Sign Up</button>
-    </div>
-  </header>
+<header class="bg-light text-center py-0 custom-header">
+  <div class="container">
+      <h1 class="mb-0">RoadTrip</h1>
+  </div>
+</header>
 
   <div class="container mt-5">
     <table class="table">
@@ -70,14 +39,4 @@
       </div>
   </div>
 
-  <footer class="footer">
-    <div>
-      <a href="about.html">About</a> | <a href="contact.html">Contact</a>
-    </div>
-  </footer>
-
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
+  {% include 'partials/footer.html' %}
