@@ -29,60 +29,41 @@
   </style>
 </head>
 <body>
-  <!-- Navigation bar -->
+      <!-- Navigation bar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="/">Home</a>
   </nav>
   <!-- Header section --> 
   <header class="bg-light text-center py-4">
-    <h1>Trips Planned</h1>
+    <h1>Packing List</h1>
     <!-- Login/Signup buttons -->
     <div class="login-signup">
       <button class="btn btn-primary">Log In</button>
       <button class="btn btn-success">Sign Up</button>
     </div>
   </header>
-  <!-- Main content container -->
-  <div class="container mt-5">
-    <!-- Table to display trip information -->
-    <table class="table">
-      <thead>
-          <tr>
-              <th>ID</th>
-              <th>Start</th>
-              <th>Stop</th>
-              <th>End</th>
-              <th>Distance</th>
-              <th>Duration</th>
-              <th>Action</th>
-          </tr>
-      </thead>
-      <tbody>
-        <!-- Loop through trips and display trip information -->
-          {% for trip in trips %}
-          <tr>
-              <td>{{ trip[0] }}</td>
-              <td>{{ trip[1] }}</td>
-              <td>{{ trip[3] }}</td>
-              <td>{{ trip[2] }}</td>
-              <td>{{ trip[4] }}</td>
-              <td>{{ trip[5] }}</td>
-              <!-- Buttons for viewing and deleting trips -->
-              <td>
-                  <a href="/view/{{ trip[0] }}" class="btn btn-primary">View</a>
-                  <a href="/delete/{{ trip[0] }}" class="btn btn-danger btn">Delete</a>
-                  <a href="/packing_list/{{ trip[0] }}" class="btn btn-info">Packing List</a> 
-              </td>
-          </tr>
-          {% endfor %}
-      </tbody>
-  </table>
-  </div>
-  <!-- Button to plan a new trip -->
-  <div class="text-center">
-    <a href="/plan" class="btn btn-primary btn-md">Plan a Trip</a>
-  </div>
-  <!-- Footer section -->
+    <div class="container mt-5">
+        <form method="POST" action="/packing_list/{{ trip_id }}">
+            <input type="hidden" name="trip_id" value="{{ trip_id }}">
+            <div class="form-group">
+                <label for="item">Add Item:</label>
+                <input type="text" class="form-control" id="item" name="item" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Item</button>
+        </form>
+        <hr>
+        <h2>Current Packing List:</h2>
+        <ul class="list-group">
+            {% for item in packing_list %}
+            <li class="list-group-item">
+                <input type="checkbox" id="item{{ loop.index }}" name="packedItems" value="{{ item }}"> 
+                <label for="item{{ loop.index }}">{{ item }}</label>
+                <a href="/delete_item/{{ trip_id}}/{{item}}" class="btn btn-danger btn">Delete</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <!-- Footer section -->
   <footer class="footer">
     <div>
       <!-- Links to About and Contact pages not finished -->
@@ -95,3 +76,5 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
+
+

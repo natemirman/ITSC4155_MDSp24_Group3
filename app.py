@@ -58,5 +58,26 @@ def delete_trips(trip_id):
     trips = db.get_trips()
     return render_template('view_database.html', trips=trips)
 
+@app.route('/packing_list/<int:trip_id>', methods=['GET', 'POST'])
+def packing_list(trip_id):
+    if request.method == 'POST':
+        item = request.form['item']
+        # Insert the item into the database
+        db.insert_packing_list_item(trip_id, item)
+    
+    # Retrieve the packing list items for the trip
+    packing_list = db.get_packing_list(trip_id)
+
+    packed_items = []
+    
+    # Render the packing list template with the packing list items
+    return render_template('list.html', trip_id=trip_id, packing_list=packing_list)
+@app.route('/delete_item/<int:trip_id>/<string:item>')
+def delete_item(trip_id,item):
+    packing_list = db.delete_item(trip_id,item)
+    packing_list = db.get_packing_list(trip_id)
+    return render_template('list.html', trip_id=trip_id, packing_list=packing_list)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
