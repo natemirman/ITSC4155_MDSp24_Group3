@@ -71,7 +71,26 @@
                     window.alert("Directions request failed due to " + status);
                 }
                 });
+
+                //set weather fields
+                const API_KEY = 'npnMHK9QewIVett71KUbRQdBJ11kViHi';
+                const DATA_FIELD = 'precipitationIntensity';
+                const TIMESTAMP = (new Date()).toISOString();
+
+                //call API and inject tile into googlemaps
+                var imageMapType = new google.maps.ImageMapType({
+                    getTileUrl: function(coord, zoom) {
+                    if (zoom > 12) {
+                    return null;
+                    }
+                    return `https://api.tomorrow.io/v4/map/tile/${zoom}/${coord.x}/${coord.y}/${DATA_FIELD}/${TIMESTAMP}.png?apikey=${API_KEY}`;
+                },
+                tileSize: new google.maps.Size(256, 256)
+                });
+
+            map.overlayMapTypes.push(imageMapType);
         }
+        
     </script>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpc67NiDkTZLgzICCT4XYphVCOz11_luw&callback=initMap" async defer></script>

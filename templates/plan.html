@@ -6,112 +6,174 @@
     </div>
 </header>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpc67NiDkTZLgzICCT4XYphVCOz11_luw&libraries=places"></script>
-    <script>
-        let map;
-        let directionsService;
-        let directionsRenderer;
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpc67NiDkTZLgzICCT4XYphVCOz11_luw&libraries=places"></script>
+<script>
+    let map;
+    let directionsService;
+    let directionsRenderer;
+    let rain = 0;
+    let temp = 0;
 
-        function initMap() {
-            map = new google.maps.Map(document.getElementById("map"), {
-                center: { lat: 44.967, lng: -103.771 },
-                zoom: 4,
-            });
-            directionsService = new google.maps.DirectionsService();
-            directionsRenderer = new google.maps.DirectionsRenderer();
-            directionsRenderer.setMap(map);
+    function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: { lat: 44.967, lng: -103.771 },
+            zoom: 4,
+        });
+        directionsService = new google.maps.DirectionsService();
+        directionsRenderer = new google.maps.DirectionsRenderer();
+        directionsRenderer.setMap(map);
 
-            // Initialize Places Autocomplete for start and end inputs
-            const startAutocomplete = new google.maps.places.Autocomplete(
-                document.getElementById("start")
-            );
-            const endAutocomplete = new google.maps.places.Autocomplete(
-                document.getElementById("end")
-            );
-            const stopAutocomplete = new google.maps.places.Autocomplete(
-                document.getElementById("stop")
-            );
-            // Add event listeners to input fields to hide the "Save Trip" button when any field is changed
-            document.getElementById("start").addEventListener("input", hideSaveTripBtn);
-            document.getElementById("end").addEventListener("input", hideSaveTripBtn);
-            document.getElementById("stop").addEventListener("input", hideSaveTripBtn);
-            // Prevent form submission on Enter key press
-            document.getElementById("directionsForm").addEventListener("keypress", function(event) {
-                if (event.keyCode === 13) {
-                    event.preventDefault();
-                    return false;
-                }
-            });
-        }
-        function hideSaveTripBtn() {
+        // Initialize Places Autocomplete for start and end inputs
+        const startAutocomplete = new google.maps.places.Autocomplete(
+            document.getElementById("start")
+        );
+        const endAutocomplete = new google.maps.places.Autocomplete(
+            document.getElementById("end")
+        );
+        const stopAutocomplete = new google.maps.places.Autocomplete(
+            document.getElementById("stop")
+        );
+        // Add event listeners to input fields to hide the "Save Trip" button when any field is changed
+        document.getElementById("start").addEventListener("input", hideSaveTripBtn);
+        document.getElementById("end").addEventListener("input", hideSaveTripBtn);
+        document.getElementById("stop").addEventListener("input", hideSaveTripBtn);
+        // Prevent form submission on Enter key press
+        document.getElementById("directionsForm").addEventListener("keypress", function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+    }
+    function hideSaveTripBtn() {
         document.getElementById("saveTripBtn").style.display = "none";
-        }
+    }
 
-        function setCalculatedValues(distance, duration) {
-            document.getElementById("distanceInput").value = distance;
-            document.getElementById("durationInput").value = duration;
-            document.getElementById("saveTripBtn").style.display = "block"; // Show the Save Trip button
-        }
+    function setCalculatedValues(distance, duration) {
+        document.getElementById("distanceInput").value = distance;
+        document.getElementById("durationInput").value = duration;
+        document.getElementById("saveTripBtn").style.display = "block"; // Show the Save Trip button
+    }
 
     function calculateAndDisplayRoute() {
-    const start = document.getElementById("start").value;
-    const end = document.getElementById("end").value;
-    const stop = document.getElementById("stop").value;
+        const start = document.getElementById("start").value;
+        const end = document.getElementById("end").value;
+        const stop = document.getElementById("stop").value;
 
-    let waypoints = [];
-    if (stop !== "") {
-        waypoints.push({ location: stop, stopover: true });
-    }
-
-    directionsService.route(
-    {
-        origin: start,
-        destination: end,
-        waypoints: waypoints, 
-        travelMode: google.maps.TravelMode.DRIVING,
-    },
-    (response, status) => {
-        if (status === "OK") {
-            directionsRenderer.setDirections(response);
-
-            // Extract distance and duration
-            let totalDistance = 0;
-            let totalDuration = 0;
-            const route = response.routes[0];
-            route.legs.forEach(leg => {
-                totalDistance += leg.distance.value;
-                totalDuration += leg.duration.value;
-            });
-            //Formats distance in meter to miles
-            const distance=formatDistance(totalDistance);
-            const duration=formatDuration(totalDuration);
-
-            // Display distance and duration
-            document.getElementById("distance").innerHTML = "Distance: " + distance;
-            document.getElementById("duration").innerHTML = "Duration: " + duration;
-
-
-            // Set calculated values to hidden inputs
-            setCalculatedValues(distance, duration);
-        } else {
-            window.alert("Directions request failed due to " + status);
+        let waypoints = [];
+        if (stop !== "") {
+            waypoints.push({ location: stop, stopover: true });
         }
-    });
-    //function to format distance in meters to miles
-    function formatDistance(meters) {
-    const miles = meters * 0.000621371;
-    return miles.toFixed(2) + " mi";
+
+        directionsService.route(
+            {
+                origin: start,
+                destination: end,
+                waypoints: waypoints,
+                travelMode: google.maps.TravelMode.DRIVING,
+            },
+            (response, status) => {
+                if (status === "OK") {
+                    directionsRenderer.setDirections(response);
+
+                    // Extract distance and duration
+                    let totalDistance = 0;
+                    let totalDuration = 0;
+                    const route = response.routes[0];
+                    route.legs.forEach(leg => {
+                        totalDistance += leg.distance.value;
+                        totalDuration += leg.duration.value;
+                    });
+                    //Formats distance in meter to miles
+                    const distance = formatDistance(totalDistance);
+                    const duration = formatDuration(totalDuration);
+
+                    // Display distance and duration
+                    document.getElementById("distance").innerHTML = "Distance: " + distance;
+                    document.getElementById("duration").innerHTML = "Duration: " + duration;
+
+
+                    // Set calculated values to hidden inputs
+                    setCalculatedValues(distance, duration);
+                } else {
+                    window.alert("Directions request failed due to " + status);
+                }
+            });
+        //function to format distance in meters to miles
+        function formatDistance(meters) {
+            const miles = meters * 0.000621371;
+            return miles.toFixed(2) + " mi";
+        }
+
+        //  function to format duration in seconds to hours
+        function formatDuration(seconds) {
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            return hours + " hr " + minutes + " min";
+        }
+
+
     }
 
-    //  function to format duration in seconds to hours
-    function formatDuration(seconds) {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    return hours + " hr " + minutes + " min";
-    }
-}
+    function rainMap() {
+        //set weather fields
+        const API_KEY = 'npnMHK9QewIVett71KUbRQdBJ11kViHi';
+        const DATA_FIELD = 'precipitationIntensity';
+        const TIMESTAMP = (new Date()).toISOString();
 
-    </script>
+        //call API and inject tile into googlemaps
+        var imageMapType = new google.maps.ImageMapType({
+            getTileUrl: function (coord, zoom) {
+                if (zoom > 12) {
+                    return null;
+                }
+                return `https://api.tomorrow.io/v4/map/tile/${zoom}/${coord.x}/${coord.y}/${DATA_FIELD}/${TIMESTAMP}.png?apikey=${API_KEY}`;
+            },
+            tileSize: new google.maps.Size(256, 256)
+        });
+
+        if (rain == 0) {
+            map.overlayMapTypes.push(imageMapType);
+            rain = 1;
+        }
+        else {
+            map.overlayMapTypes.pop(imageMapType);
+            rain = 0;
+        }
+
+    }
+
+    function tempMap() {
+        //set weather fields
+        const API_KEY = 'npnMHK9QewIVett71KUbRQdBJ11kViHi';
+        const DATA_FIELD = 'temperatureApparent';
+        const TIMESTAMP = (new Date()).toISOString();
+
+        //call API and inject tile into googlemaps
+        var imageMapTypeT = new google.maps.ImageMapType({
+            getTileUrl: function (coord, zoom) {
+                if (zoom > 12) {
+                    return null;
+                }
+                return `https://api.tomorrow.io/v4/map/tile/${zoom}/${coord.x}/${coord.y}/${DATA_FIELD}/${TIMESTAMP}.png?apikey=${API_KEY}`;
+            },
+            tileSize: new google.maps.Size(256, 256)
+        });
+        //if not already pushed push the image map onto stack, else pop it to clear.
+        if (temp == 0) {
+            map.overlayMapTypes.push(imageMapTypeT);
+            temp = 1;
+        }
+        else {
+            map.overlayMapTypes.pop(imageMapTypeT);
+            temp = 0;
+        }
+
+    }
+
+</script>
+
 <body onload="initMap()">
 
     <div class="container mt-5">
@@ -122,21 +184,25 @@
                 <label for="end">End: </label>
                 <input type="text" id="end" name="end" autocomplete="on" />
                 <label for="stop">Stop: </label>
-                <input type= "text" id="stop" name="stop" autocomplete="on" />
-                <button class="btn btn-primary" type="button" onclick="calculateAndDisplayRoute()">Get Directions</button>
+                <input type="text" id="stop" name="stop" autocomplete="on" />
+                <button class="btn btn-primary" type="button" onclick="calculateAndDisplayRoute()">Get
+                    Directions</button>
+                <button class="btn btn-primary" type="button" onclick="rainMap()">See Percipitation</button>
+                <button class="btn btn-primary" type="button" onclick="tempMap()">See Temperature</button>
                 <!-- Hidden inputs to store calculated time and distance -->
                 <input type="hidden" id="distanceInput" name="distance" />
                 <input type="hidden" id="durationInput" name="duration" />
-                <button id="saveTripBtn" class="btn btn-primary" type="submit" style="display: none;" >Save Trip</button> <!-- This submits the form -->
+                <button id="saveTripBtn" class="btn btn-primary" type="submit" style="display: none;">Save Trip</button>
+                <!-- This submits the form -->
             </form>
         </div>
         <div id="map" style="height: 400px; width: 100%;"></div>
         <div id="distance"></div>
         <div id="duration"></div>
     </div>
-    <br/>
+    <br />
     <div class="text-center">
         <a href="/see" class="btn btn-primary btn-md">See Trips</a>
-      </div>
+    </div>
 
-      {% include 'partials/footer.html' %}
+    {% include 'partials/footer.html' %}
