@@ -12,6 +12,8 @@
     let map;
     let directionsService;
     let directionsRenderer;
+    let rain = 0;
+    let temp = 0;
 
     function initMap() {
         map = new google.maps.Map(document.getElementById("map"), {
@@ -114,11 +116,10 @@
 
     }
 
-    function weatherMap() {
+    function rainMap() {
         //set weather fields
         const API_KEY = 'npnMHK9QewIVett71KUbRQdBJ11kViHi';
-        const DATA_FIELD = 'precipitationIntensity'
-        const DATA_FIELD2 = 'temperatureApparent';
+        const DATA_FIELD = 'precipitationIntensity';
         const TIMESTAMP = (new Date()).toISOString();
 
         //call API and inject tile into googlemaps
@@ -131,7 +132,44 @@
             },
             tileSize: new google.maps.Size(256, 256)
         });
-        map.overlayMapTypes.push(imageMapType);
+
+        if (rain == 0) {
+            map.overlayMapTypes.push(imageMapType);
+            rain = 1;
+        }
+        else {
+            map.overlayMapTypes.pop(imageMapType);
+            rain = 0;
+        }
+
+    }
+
+    function tempMap() {
+        //set weather fields
+        const API_KEY = 'npnMHK9QewIVett71KUbRQdBJ11kViHi';
+        const DATA_FIELD = 'temperatureApparent';
+        const TIMESTAMP = (new Date()).toISOString();
+
+        //call API and inject tile into googlemaps
+        var imageMapTypeT = new google.maps.ImageMapType({
+            getTileUrl: function (coord, zoom) {
+                if (zoom > 12) {
+                    return null;
+                }
+                return `https://api.tomorrow.io/v4/map/tile/${zoom}/${coord.x}/${coord.y}/${DATA_FIELD}/${TIMESTAMP}.png?apikey=${API_KEY}`;
+            },
+            tileSize: new google.maps.Size(256, 256)
+        });
+        //if not already pushed push the image map onto stack, else pop it to clear.
+        if (temp == 0) {
+            map.overlayMapTypes.push(imageMapTypeT);
+            temp = 1;
+        }
+        else {
+            map.overlayMapTypes.pop(imageMapTypeT);
+            temp = 0;
+        }
+
     }
 
 </script>
@@ -149,7 +187,8 @@
                 <input type="text" id="stop" name="stop" autocomplete="on" />
                 <button class="btn btn-primary" type="button" onclick="calculateAndDisplayRoute()">Get
                     Directions</button>
-                <button class="btn btn-primary" type="button" onclick="weatherMap()">See Weather</button>
+                <button class="btn btn-primary" type="button" onclick="rainMap()">See Percipitation</button>
+                <button class="btn btn-primary" type="button" onclick="tempMap()">See Temperature</button>
                 <!-- Hidden inputs to store calculated time and distance -->
                 <input type="hidden" id="distanceInput" name="distance" />
                 <input type="hidden" id="durationInput" name="duration" />
