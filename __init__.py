@@ -1,69 +1,60 @@
-#__init__.py
-from flask import Flask, request, redirect, render_template, url_for
-import db  # Ensure this imports your db.py functionality for database interaction
+from flask import Flask, request, session, redirect, url_for, render_template, flash, g
+from db import add_user, verify_user, get_db
 
-app = Flask(__name__, static_url_path='/public', static_folder='public')
+app = Flask(__name__)
+app.secret_key = 'your_very_secret_key'  # Set to a secure, random secret key in production
 
+# Index route to check if a user is logged in and redirect accordingly
 @app.route('/')
 def index():
-    return render_template('index.html', css_style="/public/css/styles.css")
+    if 'user_id' in session:
+        return render_template('index.html', user=session['username'])
+    return redirect(url_for('login'))
 
-@app.route('/plan', methods=['GET', 'POST'])
-def plan_trip():
+# Route for user registration
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
     if request.method == 'POST':
-        # Extract form data
-        start = request.form['start']
-        end = request.form['end']
-        distance = request.form['distance']  # Assuming you add a way to input this in the form
-        duration = request.form['duration']  # Assuming you add a way to input this in the form
-        stop=request.form['stop']
-        # Assuming db.py has a function called insert_trip that inserts the data into the database
-        db.insert_trip(start, end, distance, duration,stop)
-        
-        # Redirect to another page, maybe to the list of trips
-        return redirect('/see')
-    else:
-        return render_template('plan.html')
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+        try:
+            add_user(username, email, password)
+            flash('User successfully registered. Please log in.', 'success')
+            return redirect(url_for('login'))
+        except Exception as e:
+            flash('Error registering user. User may already exist.', 'error')
+    return render_template('signup.html')
 
-@app.route('/see')
-def see_trips():
-    # Assuming db.py has a function called get_trips that fetches trips from the database
-    trips = db.get_trips()
-    return render_template('view_database.html', trips=trips)
+# Route for user login
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form.get('email')  # Use .get() to avoid BadRequestKeyError
+        password = request.form.get('password')
+        if verify_user(email, password):
+            session['user_id'] = email  # Storing user email as identifier in session
+            session['username'] = email.split('@')[0]  # Example to use part of the email as username
+            flash('You were successfully logged in', 'success')
+            return redirect(url_for('index'))
+        else:
+            flash('Invalid email/password combination', 'error')
+    return render_template('login.html')
 
-@app.route('/view/<int:trip_id>')
-def view_trip(trip_id):
-    # Fetch trip details from the database based on trip_id
-    trip = db.get_trip_by_id(trip_id)
+# Route for logging out a user
+@app.route('/logout')
+def logout():
+    session.pop('user_id', None)  # Remove the user_id from session
+    session.pop('username', None)  # Remove the username from session
+    flash('You were logged out', 'success')
+    return redirect(url_for('login'))
 
-    
-    return render_template('view.html', trip=trip)
-@app.route('/delete/<int:trip_id>')
-def delete_trips(trip_id):
-
-    trips = db.delete_trip(trip_id)
-    trips = db.get_trips()
-    return render_template('view_database.html', trips=trips)
+# Ensure that database connections are closed
+@app.teardown_appcontext
+def close_connection(exception):
+    db = getattr(g, '_database', None)
+    if db is not None:
+        db.close()
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-@app.route('/about')
-def about():
-    return render_template('about.html')
-
-@app.route('/contact')
-def contact():
-    return render_template('contact.html')
-
-@app.route('/login')
-def login():
-    return render_template('login.html')
-
-@app.route('/signup')
-def signup():
-    return render_template('signup.html')
-
-@app.route('/stat')
-def stat():
-    return render_template('stat.html')
