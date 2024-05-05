@@ -58,3 +58,31 @@ def close_connection(exception):
 
 if __name__ == '__main__':
     app.run(debug=True)
+<<<<<<< HEAD
+=======
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+@app.route('/signup')
+def signup():
+    return render_template('signup.html')
+
+@app.route('/stat')
+def see_stats():
+    trips = db.get_trips()  # Assuming this fetches all trips data
+    total_distance = db.get_total_distance()
+    total_time = db.get_total_time()
+    total_trips = db.get_total_trips()
+    flags = db.get_flags()
+    return render_template('stat.html', trips=trips, total_distance=total_distance, total_time=total_time, total_trips=total_trips, flags=flags)
+>>>>>>> main
