@@ -1,6 +1,7 @@
 #db.py
 import sqlite3
 from sqlite3 import Error
+import re
 
 def create_connection(db_file):
     """ create a database connection to a SQLite database """
@@ -50,6 +51,68 @@ def insert_trip(start, end, distance, duration,stop):
     cur.execute(sql, (start, end, distance, duration,stop))
     conn.commit()
     conn.close()
+    
+    
+def get_total_distance():
+    """
+    Calculate the total distance of all trips in the trips table
+    """
+    conn = create_connection(db_file)
+    cur = conn.cursor()
+    cur.execute("SELECT SUM(Distance) FROM trips")
+    total_distance = cur.fetchone()[0]  # Fetch the result which is the total distance
+    conn.close()
+    return round(total_distance, 2) if total_distance is not None else 0.0
+
+def get_total_time():
+    """
+    Calculate the total time of all trips in the trips table, where duration is in the format 'X hr Y min'
+    """
+    conn = create_connection(db_file)
+    cur = conn.cursor()
+    cur.execute("SELECT duration FROM trips")
+    durations = cur.fetchall()
+    total_minutes = 0
+
+    for duration in durations:
+        if duration[0]:  # Check if duration is not None
+            hours, minutes = parse_duration(duration[0])
+            total_minutes += hours * 60 + minutes
+
+    conn.close()
+    return format_time(total_minutes)
+
+def parse_duration(duration_str):
+    """
+    Parse the duration string 'X hr Y min' to get hours and minutes as integers
+    """
+    numbers = re.findall(r'\d+', duration_str)
+    if len(numbers) == 2:
+        return int(numbers[0]), int(numbers[1])  # hours, minutes
+    elif 'hr' in duration_str:
+        return int(numbers[0]), 0  # hours, no minutes
+    elif 'min' in duration_str:
+        return 0, int(numbers[0])  # no hours, minutes
+    return 0, 0  # default if format is unexpected
+
+def format_time(total_minutes):
+    """
+    Convert total minutes into days, hours, and minutes and format into a string
+    """
+    days = total_minutes // 1440
+    hours = (total_minutes % 1440) // 60
+    minutes = total_minutes % 60
+    return f"{days} days, {hours} hours, {minutes} minutes"
+
+def get_total_trips():
+    """
+    Calculate the total number of trips in the trips table
+    """
+    conn = create_connection(db_file)
+    cur = conn.cursor()
+    cur.execute("SELECT COUNT(*) FROM trips")  
+    total_trips = cur.fetchone()[0]  
+    return total_trips
 
 def get_trips():
     """
@@ -84,6 +147,38 @@ def delete_trip(trip_id):
     cur.execute("DELETE FROM trips WHERE id=?", (trip_id,))
     conn.commit()
     conn.close()
+    
+def get_flags():
+    """
+    Query all rows in the trips table and check if columns start, stop, and end contain specific state identifiers.
+    """
+    states = [
+        "AL, USA", "AK, USA", "AZ, USA", "AR, USA", "CA, USA",
+        "CO, USA", "CT, USA", "DE, USA", "DC, USA", "FL, USA",
+        "GA, USA", "HI, USA", "ID, USA", "IL, USA", "IN, USA",
+        "IA, USA", "KS, USA", "KY, USA", "LA, USA", "ME, USA",
+        "MD, USA", "MA, USA", "MI, USA", "MN, USA", "MS, USA",
+        "MO, USA", "MT, USA", "NE, USA", "NV, USA", "NH, USA",
+        "NJ, USA", "NM, USA", "NY, USA", "NC, USA", "ND, USA",
+        "OH, USA", "OK, USA", "OR, USA", "PA, USA", "RI, USA",
+        "SC, USA", "SD, USA", "TN, USA", "TX, USA", "UT, USA",
+        "VT, USA", "VA, USA", "WA, USA", "WV, USA", "WI, USA", 
+        "WY, USA"
+    ]
+    found_states = [False] * 51  # Initialize an array of 51 False values
+
+    conn = create_connection(db_file)
+    cur = conn.cursor()
+    cur.execute("SELECT start, stop, end FROM trips")  # Modify to use the actual column names
+    rows = cur.fetchall()
+
+    for row in rows:
+        for index, state in enumerate(states):
+            if any(state in col for col in row):
+                found_states[index] = True
+
+    conn.close()
+    return found_states
 
 
 conn.close()

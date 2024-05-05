@@ -57,3 +57,7 @@
     padding: 0; 
 }
 
+img.black-and-white {
+    filter: grayscale(100%);
+}
+

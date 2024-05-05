@@ -5,5 +5,290 @@
         <h1 class="mb-0">Statistics</h1>
     </div>
 </header>
+<body>
+    <div class="container mt-4">
+        <table class="table">
+          <tbody>
+              <tr>
+                <td>Total Trips:</td>
+                <td>{{total_trips}}</td>
+              </tr>
+              <tr>
+                  <td>Total Distance:</td>
+                <td>{{ total_distance }} mi</td>
+              </tr>
+              <tr>
+                <td>Total Time:</td>
+                <td>{{total_time}}</td>
+              </tr>
+              <tr>
+                <td>Total States:</td>
+                <td id="totalDisplay">Total: 0</td>
+              </tr>
+          </tbody>
+      </table>
+      </div>       
+        <div  class="container mt-5">
+            <img src="/public/static/flags/Alabama.png" alt="Alabama" width="100px" id="Alabama" title="Alabama">
+            <img src="/public/static/flags/Alaska.png" alt="Alaska" width="100px" id="Alaska" title="Alaska">
+            <img src="/public/static/flags/Arizona.png" alt="Arizona" width="100px" id="Arizona" title="Arizona">
+            <img src="/public/static/flags/Arkansas.png" alt="Arkansas" width="100px" id="Arkansas" title="Arkansas">
+            <img src="/public/static/flags/California.png" alt="California" width="100px" id="California" title="California">
+            <img src="/public/static/flags/Colorado.png" alt="Colorado" width="100px" id="Colorado" title="Colorado">
+            <img src="/public/static/flags/Connecticut.png" alt="Connecticut" width="100px" id="Connecticut" title="Connecticut">
+            <img src="/public/static/flags/Delaware.jpg" alt="Delaware" width="100px" id="Delaware" title="Delaware">
+            <img src="/public/static/flags/Florida.png" alt="Florida" width="100px" id="Florida" title="Florida">
+            <img src="/public/static/flags/Georgia.png" alt="Georgia" width="100px" id="Georgia" title="Georgia">
+            <img src="/public/static/flags/Hawaii.png" alt="Hawaii" width="100px" id="Hawaii" title="Hawaii">
+            <img src="/public/static/flags/Idaho.jpg" alt="Idaho" width="100px" id="Idaho" title="Idaho">
+            <img src="/public/static/flags/Illinois.png" alt="Illinois" width="100px" id="Illinois" title="Illinois">
+            <img src="/public/static/flags/Indiana.png" alt="Indiana" width="100px" id="Indiana" title="Indiana">
+            <img src="/public/static/flags/Iowa.png" alt="Iowa" width="100px" id="Iowa" title="Iowa">
+            <img src="/public/static/flags/Kansas.png" alt="Kansas" width="100px" id="Kansas" title="Kansas">
+            <img src="/public/static/flags/Kentucky.png" alt="Kentucky" width="100px" id="Kentucky" title="Kentucky">
+            <img src="/public/static/flags/Louisiana.png" alt="Louisiana" width="100px" id="Louisiana" title="Louisiana">
+            <img src="/public/static/flags/Maine.png" alt="Maine" width="100px" id="Maine" title="Maine">
+            <img src="/public/static/flags/Maryland.png" alt="Maryland" width="100px" id="Maryland" title="Maryland">
+            <img src="/public/static/flags/Massachusetts.png" alt="Massachusetts" width="100px" id="Massachusetts" title="Massachusetts">
+            <img src="/public/static/flags/Michigan.png" alt="Michigan" width="100px" id="Michigan" title="Michigan">
+            <img src="/public/static/flags/Minnesota.png" alt="Minnesota" width="100px" id="Minnesota" title="Minnesota">
+            <img src="/public/static/flags/Mississippi.png" alt="Mississippi" width="100px" id="Mississippi" title="Mississippi">
+            <img src="/public/static/flags/Missouri.png" alt="Missouri" width="100px" id="Missouri" title="Missouri">
+            <img src="/public/static/flags/Montana.png" alt="Montana" width="100px" id="Montana" title="Montana">
+            <img src="/public/static/flags/Nebraska.png" alt="Nebraska" width="100px" id="Nebraska" title="Nebraska">
+            <img src="/public/static/flags/Nevada.png" alt="Nevada" width="100px" id="Nevada" title="Nevada">
+            <img src="/public/static/flags/New Hampshire.png" alt="New Hampshire" width="100px" id="New_Hampshire" title="New Hampshire">
+            <img src="/public/static/flags/New Jersey.png" alt="New Jersey" width="100px" id="New_Jersey" title="New Jersey">
+            <img src="/public/static/flags/New Mexico.png" alt="New Mexico" width="100px" id="New_Mexico" title="New Mexico">
+            <img src="/public/static/flags/New York.png" alt="New York" width="100px" id="New_York" title="New York">
+            <img src="/public/static/flags/North Carolina.png" alt="North Carolina" width="100px" id="North_Carolina" title="North Carolina">
+            <img src="/public/static/flags/North Dakota.png" alt="North Dakota" width="100px" id="North_Dakota" title="North Dakota">
+            <img src="/public/static/flags/Ohio.png" alt="Ohio" width="100px" id="Ohio" title="Ohio">
+            <img src="/public/static/flags/Oklahoma.png" alt="Oklahoma" width="100px" id="Oklahoma" title="Oklahoma">
+            <img src="/public/static/flags/Oregon.png" alt="Oregon" width="100px" id="Oregon" title="Oregon">
+            <img src="/public/static/flags/Pennsylvania.png" alt="Pennsylvania" width="100px" id="Pennsylvania" title="Pennsylvania">
+            <img src="/public/static/flags/Rhode Island.png" alt="Rhode Island" width="100px" id="Rhode_Island" title="Rhode Island">
+            <img src="/public/static/flags/South Carolina.png" alt="South Carolina" width="100px" id="South_Carolina" title="South Carolina">
+            <img src="/public/static/flags/South Dakota.png" alt="South Dakota" width="100px" id="South_Dakota" title="South Dakota">
+            <img src="/public/static/flags/Tennessee.png" alt="Tennessee" width="100px" id="Tennessee" title="Tennessee">
+            <img src="/public/static/flags/Texas.png" alt="Texas" width="100px" id="Texas" title="Texas">
+            <img src="/public/static/flags/Utah.png" alt="Utah" width="100px" id="Utah" title="Utah">
+            <img src="/public/static/flags/Vermont.jpg" alt="Vermont" width="100px" id="Vermont" title="Vermont">
+            <img src="/public/static/flags/Virginia.png" alt="Virginia" width="100px" id="Virginia" title="Virginia">
+            <img src="/public/static/flags/Washington.png" alt="Washington" width="100px" id="Washington" title="Washington">
+            <img src="/public/static/flags/West Virginia.png" alt="West Virginia" width="100px" id="West_Virginia" title="West Virginia">
+            <img src="/public/static/flags/Wisconsin.png" alt="Wisconsin" width="100px" id="Wisconsin" title="Wisconsin">
+            <img src="/public/static/flags/Wyoming.png" alt="Wyoming" width="100px" id="Wyoming" title="Wyoming"> 
+        </div>
+</body>
+
+<script>
+    // Retrieve the flag value passed from Flask
+    var flags = {{ flags | tojson }};
+    var total = 50;
+    
+    if (!flags[0]) {
+        document.getElementById('Alabama').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[1]) {
+        document.getElementById('Alaska').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[2]) {
+        document.getElementById('Arizona').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[3]) {
+        document.getElementById('Arkansas').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[4]) {
+        document.getElementById('California').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[5]) {
+        document.getElementById('Colorado').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[6]) {
+        document.getElementById('Connecticut').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[7]) {
+        document.getElementById('Delaware').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[9]) {
+        document.getElementById('Florida').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[10]) {
+        document.getElementById('Georgia').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[11]) {
+        document.getElementById('Hawaii').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[12]) {
+        document.getElementById('Idaho').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[13]) {
+        document.getElementById('Illinois').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[14]) {
+        document.getElementById('Indiana').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[15]) {
+        document.getElementById('Iowa').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[16]) {
+        document.getElementById('Kansas').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[17]) {
+        document.getElementById('Kentucky').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[18]) {
+        document.getElementById('Louisiana').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[19]) {
+        document.getElementById('Maine').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[20]) {
+        document.getElementById('Maryland').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[21]) {
+        document.getElementById('Massachusetts').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[22]) {
+        document.getElementById('Michigan').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[23]) {
+        document.getElementById('Minnesota').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[24]) {
+        document.getElementById('Mississippi').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[25]) {
+        document.getElementById('Missouri').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[26]) {
+        document.getElementById('Montana').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[27]) {
+        document.getElementById('Nebraska').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[28]) {
+        document.getElementById('Nevada').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[29]) {
+        document.getElementById('New_Hampshire').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[30]) {
+        document.getElementById('New_Jersey').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[31]) {
+        document.getElementById('New_Mexico').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[32]) {
+        document.getElementById('New_York').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[33]) {
+        document.getElementById('North_Carolina').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[34]) {
+        document.getElementById('North_Dakota').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[35]) {
+        document.getElementById('Ohio').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[36]) {
+        document.getElementById('Oklahoma').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[37]) {
+        document.getElementById('Oregon').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[38]) {
+        document.getElementById('Pennsylvania').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[39]) {
+        document.getElementById('Rhode_Island').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[40]) {
+        document.getElementById('South_Carolina').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[41]) {
+        document.getElementById('South_Dakota').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[42]) {
+        document.getElementById('Tennessee').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[43]) {
+        document.getElementById('Texas').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[44]) {
+        document.getElementById('Utah').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[45]) {
+        document.getElementById('Vermont').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[46]) {
+        document.getElementById('Virginia').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[47]) {
+        document.getElementById('Washington').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[48]) {
+        document.getElementById('West_Virginia').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[49]) {
+        document.getElementById('Wisconsin').classList.add('black-and-white');
+        total--;
+    }
+    if (!flags[50]) {
+        document.getElementById('Wyoming').classList.add('black-and-white');
+        total--;
+    }
+
+    document.getElementById('totalDisplay').innerText = 'Total: ' + total +"/51";
+</script>
 
 {% include 'partials/footer.html' %}
